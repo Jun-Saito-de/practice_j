@@ -37,6 +37,8 @@ class _MyHomePageState extends State<MyHomePage> {
   static var _message = "All right.";
   // チェックボックスの状態を保持する変数。初期値は未チェックとする
   static var _checked = false;
+  // ラジオボタンの状態を保持する変数
+  static var _selected = 'A';
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ),
-             // チェックボックスとテキストを横並びで表示する行
+            // チェックボックスとテキストを横並びで表示する行
             Padding(
               padding: EdgeInsets.all(10.0),
               child: Row(
@@ -69,9 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                   // チェックボックス（状態は _checked によって制御される）
+                  // チェックボックス（状態は _checked によって制御される）
                   Checkbox(value: _checked, onChanged: checkChanged),
-                   // チェックボックス横のテキスト
+                  // チェックボックス横のテキスト
                   Text(
                     "Checkbox",
                     style: TextStyle(
@@ -79,8 +81,55 @@ class _MyHomePageState extends State<MyHomePage> {
                       fontWeight: FontWeight.w400,
                       fontFamily: "Roboto",
                     ),
-                  )
-                ]
+                  ),
+                ],
+              ),
+            ),
+            // ラジオボタン追加部分
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Radio<String>(
+                    value: 'A',
+                    groupValue: _selected,
+                    onChanged: radioChanged,
+                  ),
+                  Text(
+                    "radio A",
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto",
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Radio<String>(
+                    value: 'B',
+                    groupValue: _selected,
+                    onChanged: radioChanged,
+                  ),
+                  Text(
+                    "radio B",
+                    style: TextStyle(
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto",
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -90,10 +139,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // チェックボックスが切り替えられたときに呼ばれる関数です
-  void checkChanged(bool? value){
+  void checkChanged(bool? value) {
     setState(() {
       _checked = value!; // nullでないことを確認しつつ、_checkedを 更新する
       _message = value ? "checked!" : "not checked…"; // チェック状態に応じてメッセージを更新する
+    });
+  }
+
+  // ラジオボタンの状態変更を管理する関数
+  void radioChanged(String? value) {
+    setState(() {
+      _selected = value!;
+      _message = 'select: $_selected';
     });
   }
 }
