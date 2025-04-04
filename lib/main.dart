@@ -45,12 +45,17 @@ class _MyHomePageState extends State<MyHomePage> {
   static var _dropdownSelected = "A";
   // ドロップダウンボタンのメッセージを保持する変数
   static var _dropdownMessage = "Please Select.";
+  // スライダーのメッセージを保持する変数
+  static var _sliderMessage = "値を設定しましょう";
+  // スライダーの値を保持する変数
+  static var _sliderValue = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("App Name")), // 上部のアプリバー（タイトル表示）
-      body: Center(
+      body: SingleChildScrollView(
+        // ← スクロール可能にする
         child: Column(
           // ここから子ウィジェットを縦方向に並べる（Column）
           mainAxisAlignment: MainAxisAlignment.start, // 上から並べる
@@ -187,6 +192,81 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            // ポップアップメニューボタン追加部分
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      _dropdownMessage,
+                      style: const TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                  ),
+
+                  Align(
+                    alignment: Alignment.centerRight, // 右寄せに配置
+                    child: PopupMenuButton<String>(
+                      onSelected: popupSelected, // 選択時の処理
+                      itemBuilder:
+                          (BuildContext context) => <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: "One",
+                              child: Text("One"),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: "Two",
+                              child: Text("Two"),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: "Three",
+                              child: Text("Three"),
+                            ),
+                          ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // スライダー追加部分
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  // スライダーのメッセージ部分
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      _sliderMessage,
+                      style: const TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                  ),
+                  // スライダー本体
+                  Slider(
+                    onChanged: sliderChanged,
+                    min: 0.0,
+                    max: 100.0,
+                    divisions: 20,
+                    value: _sliderValue,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -211,6 +291,13 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _dropdownSelected = value ?? "not selected...";
       _dropdownMessage = 'your select is $_dropdownSelected';
+    });
+  }
+
+  void sliderChanged(double value) {
+    setState(() {
+      _sliderValue = value.floorToDouble();
+      _sliderMessage = '設定した値: $_sliderValue';
     });
   }
 }
