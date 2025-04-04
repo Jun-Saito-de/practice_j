@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 // ホーム画面の状態を管理するクラス
 class _MyHomePageState extends State<MyHomePage> {
   // 表示メッセージを保持する変数
-  static var _message = "ok.";
+  static var _message = "All right.";
   // チェックボックスの状態を保持する変数。初期値は未チェックとする
   static var _checked = false;
 
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // チェックボックスが切り替えられたときに呼ばれる関数
+  // チェックボックスが切り替えられたときに呼ばれる関数です
   void checkChanged(bool? value){
     setState(() {
       _checked = value!; // nullでないことを確認しつつ、_checkedを 更新する
