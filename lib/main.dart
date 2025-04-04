@@ -34,11 +34,17 @@ class MyHomePage extends StatefulWidget {
 // ホーム画面の状態を管理するクラス
 class _MyHomePageState extends State<MyHomePage> {
   // 表示メッセージを保持する変数
-  static var _message = "All right.";
+  static var _checkMessage = "Please Select.";
   // チェックボックスの状態を保持する変数。初期値は未チェックとする
   static var _checked = false;
   // ラジオボタンの状態を保持する変数
-  static var _selected = 'A';
+  static var _radioSelected = 'A';
+  // ラジオボタンのメッセージの変数
+  static var _radioMessage = "選択してください";
+  // ドロップダウンボタンの状態を保持する変数
+  static var _dropdownSelected = "A";
+  // ドロップダウンボタンのメッセージを保持する変数
+  static var _dropdownMessage = "Please Select.";
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: EdgeInsets.all(20.0),
               child: Text(
-                _message,
+                _checkMessage,
                 style: TextStyle(
                   fontSize: 32.0,
                   fontWeight: FontWeight.w400,
@@ -85,6 +91,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            // ラジオボタンメッセージ部分
+            Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text(
+                _radioMessage,
+                style: TextStyle(
+                  fontSize: 32.0,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: "Roboto",
+                ),
+              ),
+            ),
             // ラジオボタン追加部分
             Padding(
               padding: EdgeInsets.all(10.0),
@@ -95,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Radio<String>(
                     value: 'A',
-                    groupValue: _selected,
+                    groupValue: _radioSelected,
                     onChanged: radioChanged,
                   ),
                   Text(
@@ -118,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   Radio<String>(
                     value: 'B',
-                    groupValue: _selected,
+                    groupValue: _radioSelected,
                     onChanged: radioChanged,
                   ),
                   Text(
@@ -132,25 +150,67 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
+            // ドロップダウンボタン追加部分
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      _dropdownMessage,
+                      style: const TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto",
+                      ),
+                    ),
+                  ),
+                  DropdownButton<String>(
+                    onChanged: popupSelected,
+                    value: _dropdownSelected, // 修正: 'A' を含む選択肢を追加
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "Roboto",
+                    ),
+                    items: const <DropdownMenuItem<String>>[
+                      DropdownMenuItem<String>(value: "A", child: Text("A")),
+                      DropdownMenuItem<String>(value: "B", child: Text("B")),
+                      DropdownMenuItem<String>(value: "C", child: Text("C")),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  // チェックボックスが切り替えられたときに呼ばれる関数です
   void checkChanged(bool? value) {
     setState(() {
-      _checked = value!; // nullでないことを確認しつつ、_checkedを 更新する
-      _message = value ? "checked!" : "not checked…"; // チェック状態に応じてメッセージを更新する
+      _checked = value!;
+      _checkMessage = value ? "checked!" : "not checked…";
     });
   }
 
-  // ラジオボタンの状態変更を管理する関数
   void radioChanged(String? value) {
     setState(() {
-      _selected = value!;
-      _message = 'select: $_selected';
+      _radioSelected = value!;
+      _radioMessage = '$_radioSelectedを選択';
+    });
+  }
+
+  void popupSelected(String? value) {
+    setState(() {
+      _dropdownSelected = value ?? "not selected...";
+      _dropdownMessage = 'your select is $_dropdownSelected';
     });
   }
 }
